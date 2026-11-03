@@ -283,7 +283,19 @@ section { padding: 6rem 1.5rem; position: relative; z-index: 1; }
   box-shadow: 0 0 60px rgba(59,130,246,0.2), 0 40px 80px rgba(0,0,0,0.6);
   transform: scale(0.92) translateY(20px); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
   overflow: hidden; position: relative;
+  display: flex; flex-direction: column;
+  max-height: calc(100vh - 3rem); max-height: calc(100dvh - 3rem);
 }
+/* Scrollable content area so tall modals never get cut off */
+.modal-scroll {
+  flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: rgba(59,130,246,0.4) transparent;
+}
+.modal-scroll::-webkit-scrollbar { width: 6px; }
+.modal-scroll::-webkit-scrollbar-track { background: transparent; }
+.modal-scroll::-webkit-scrollbar-thumb { background: rgba(59,130,246,0.35); border-radius: 6px; }
+.modal-scroll::-webkit-scrollbar-thumb:hover { background: rgba(59,130,246,0.6); }
 .modal-overlay.active .modal-box { transform: scale(1) translateY(0); }
 .modal-glow {
   position: absolute; top: -60px; left: 50%; transform: translateX(-50%);
@@ -361,7 +373,7 @@ section { padding: 6rem 1.5rem; position: relative; z-index: 1; }
 }
 .modal-period { font-size: 0.75rem; color: var(--muted); }
 .modal-close {
-  position: absolute; top: 1.1rem; right: 1.1rem;
+  position: absolute; top: 1.1rem; right: 1.1rem; z-index: 5;
   width: 32px; height: 32px; border-radius: 8px;
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
   color: var(--muted); font-size: 1.1rem; cursor: pointer;
@@ -687,6 +699,7 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
   <div class="modal-box" id="projectModalBox">
     <div class="modal-glow"></div>
     <button class="modal-close" onclick="closeProjectModal()">✕</button>
+    <div class="modal-scroll">
     <div class="modal-header">
       <div class="modal-logo" id="projectModalIcon"></div>
       <div class="modal-header-text">
@@ -704,6 +717,7 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
     <div class="modal-footer">
       <div class="modal-period" id="projectModalPeriod"></div>
     </div>
+    </div><!-- /modal-scroll -->
   </div>
 </div>
 
@@ -745,7 +759,7 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
                 <img src="muneeb_images/pkcert-logo.png" alt="National CERT" style="width:100%;height:100%;object-fit:contain;padding:5px;" onerror="this.style.display='none';this.parentElement.innerHTML='🛡️';">
               </div>
               <div>
-                <div class="tl-period">1 Jul — 28 Aug 2026 · 8 Weeks</div>
+                <div class="tl-period">1 Jul — 28 Aug 2026 · 8 Weeks · Remote</div>
                 <div class="tl-title">Project Management Intern (PMU)</div>
               </div>
             </div>
@@ -839,26 +853,6 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
           </div>
         </div>
 
-        <!-- CARD 4: Nesternship -->
-        <div class="tl-entry reveal">
-          <div class="tl-dot"></div>
-          <div class="glass tl-card" onclick="openModal('nestle')">
-            <div class="tl-card-hint">click to view</div>
-            <div style="display:flex;align-items:center;gap:0.9rem;margin-bottom:0.75rem;">
-              <div style="width:40px;height:40px;border-radius:10px;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;">
-                <!-- Replace src with: muneeb_images/nesternship-logo.png -->
-                <img src="muneeb_images/nesternship-logo.png" alt="nesternship" style="width:100%;height:100%;object-fit:contain;padding:5px;" onerror="this.style.display='none';this.parentElement.innerHTML='🏅';">
-              </div>
-              <div>
-                <div class="tl-period">Certification</div>
-                <div class="tl-title">Nestle E-learning</div>
-              </div>
-            </div>
-            <div class="tl-inst">Professional Development Program</div>
-            <div class="tl-desc">Practical, hands-on professional training program focused on real-world project and operations management skills.</div>
-          </div>
-        </div>
-
       </div>
     </div>
   </div>
@@ -869,6 +863,7 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
   <div class="modal-box" id="modalBox">
     <div class="modal-glow"></div>
     <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-scroll">
     <div class="modal-header">
       <div class="modal-logo" id="modalLogo"></div>
       <div class="modal-header-text">
@@ -886,6 +881,7 @@ footer { border-top: 1px solid var(--border); padding: 4rem 1.5rem 2rem; positio
     <div class="modal-footer">
       <div class="modal-period" id="modalPeriod"></div>
     </div>
+    </div><!-- /modal-scroll -->
   </div>
 </div>
 
@@ -1057,16 +1053,6 @@ const certData = {
     period: 'Google Career Certificates',
     certImage: 'muneeb_images/google2-cert.pdf'
   },
-  nestle: {
-    tag: 'Certification · Nestle E-learning',
-    title: 'Nestle E-learning',
-    issuer: 'Nestle - E learning Program',
-    logo: '<img src="muneeb_images/nestle-logo.png" alt="nesternship" style="width:100%;height:100%;object-fit:contain;padding:10px;" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'🏅\';">',
-    desc: 'A structured, hands-on professional development program designed to bridge academia and industry. The Nesternship provided practical exposure to real-world project and operations management challenges — building competencies in workflow coordination, team collaboration, task prioritization, and professional communication in a fast-paced work environment.',
-    skills: ['Workflow Coordination', 'Team Collaboration', 'Task Prioritization', 'Professional Communication', 'Operations Management', 'Problem Solving'],
-    period: 'Professional Development Program',
-    certImage: 'muneeb_images/nestle-cert.pdf'
-  },
   ogdcl: {
     tag: 'Internship · Summer Internship Programme 2026',
     title: 'Projects Department Intern',
@@ -1081,13 +1067,13 @@ const certData = {
     ]
   },
   pkcert: {
-    tag: 'Internship · National CERT Summer Internship Program',
+    tag: 'Remote Internship · National CERT Summer Internship Program',
     title: 'Project Management Intern (PMU)',
     issuer: 'National Cyber Emergency Response Team — Government of Pakistan',
     logo: '<img src="muneeb_images/pkcert-logo.png" alt="National CERT" style="width:100%;height:100%;object-fit:contain;padding:10px;" onerror="this.style.display=\'none\';this.parentElement.innerHTML=\'🛡️\';">',
-    desc: 'Completed an 8-week internship in the domain of Project Management at the Project Management Unit (PMU) of National CERT, Government of Pakistan. During the internship, prepared a complete Project Management Plan for an Incident Response Plan Development project, covering scope, a 10-phase schedule with 20 work packages and Gantt chart, budget, quality, RACI matrix, communications, risk register, procurement, stakeholder, change management and closure plans.',
+    desc: 'Completed an 8-week remote (online) internship in the domain of Project Management at the Project Management Unit (PMU) of National CERT, Government of Pakistan. During the internship, prepared a complete Project Management Plan for an Incident Response Plan Development project, covering scope, a 10-phase schedule with 20 work packages and Gantt chart, budget, quality, RACI matrix, communications, risk register, procurement, stakeholder, change management and closure plans.',
     skills: ['Project Management Plan', 'WBS & Scheduling', 'RACI Matrix', 'Risk Register', 'Cost & Budget Planning', 'Stakeholder Management', 'Change Control'],
-    period: '1 July 2026 — 28 August 2026',
+    period: '1 July 2026 — 28 August 2026 · Online / Remote',
     files: [
       { title: 'Internship Completion Certificate', sub: 'PDF — Sr # PKC-26-001471', href: 'muneeb_images/PKCERT_Internship_Certificate.pdf' },
       { title: 'Project Management Plan (IRP Development)', sub: 'PDF — work prepared during the internship', href: 'muneeb_images/Project_Management_Plan_IRP_Development.pdf' }
@@ -1129,6 +1115,7 @@ function openModal(id) {
         </div>
       </div>`).join('');
 
+  document.querySelector('#certModal .modal-scroll').scrollTop = 0;
   document.getElementById('certModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
@@ -1212,6 +1199,7 @@ function openProjectModal(id) {
         </a>
       </div>
     </div>`;
+  document.querySelector('#projectModal .modal-scroll').scrollTop = 0;
   document.getElementById('projectModal').classList.add('active');
   document.body.style.overflow = 'hidden';
 }
